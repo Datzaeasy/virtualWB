@@ -1,2 +1,2 @@
 # ioBroker.virtualwb
-virtualWB with native Materialize design and object browser select dialogs.
+virtualWB with fully functional selectId object picker, clean card layout, and isolated tab sections.

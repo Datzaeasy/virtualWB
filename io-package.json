@@ -1,11 +1,11 @@
 {
   "common": {
     "name": "virtualwb",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "news": {
-      "0.4.0": {
-        "en": "Updated admin UI with native Materialize CSS styling and object browser select buttons",
-        "de": "Admin-UI auf modernes Materialize CSS mit Objekt-Auswahldialogen aktualisiert"
+      "0.5.0": {
+        "en": "Fixed native ioBroker selectId object browser popups and reorganized clean tab views",
+        "de": "Native ioBroker selectId Objektauswahl-Dialoge korrigiert und übersichtliche Reiter-Ansichten bereinigt"
       }
     },
     "title": "virtualWB",
@@ -14,8 +14,8 @@
       "de": "virtualWB"
     },
     "desc": {
-      "en": "Virtual Wallbox with modern Materialize design and object selector popups",
-      "de": "Virtuelle Wallbox mit modernem Materialize-Design und Objekt-Auswahldialogen"
+      "en": "Virtual Wallbox with native selectId object picker and structured tab pages",
+      "de": "Virtuelle Wallbox mit nativem selectId Objekt-Auswahldialog und strukturierten Reiterseiten"
     },
     "platforms": [
       "Javascript/Node.js"

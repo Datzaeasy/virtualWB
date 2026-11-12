@@ -1,7 +1,7 @@
 {
   "name": "iobroker.virtualwb",
-  "version": "0.4.0",
-  "description": "virtualWB logic, up to 4 charging points, dynamic prices, load management, Materialize UI and native ioBroker object selector popups",
+  "version": "0.5.0",
+  "description": "virtualWB logic, up to 4 charging points, dynamic prices, load management, clean Materialize tabs and native selectId object browser",
   "author": "User",
   "homepage": "https://github.com/Datzaeasy/iobroker.virtualwb",
   "license": "MIT",

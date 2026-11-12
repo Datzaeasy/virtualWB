@@ -14,7 +14,7 @@ class VirtualWb extends utils.Adapter {
     }
 
     async onReady() {
-        this.log.info('virtualWB Adapter gestartet (v0.4.0)!');
+        this.log.info('virtualWB Adapter gestartet (v0.5.0)!');
         this.subscribeStates('control.chargeMode');
         this.interval = setInterval(() => {
             this.runControlLoop();
@@ -28,8 +28,8 @@ class VirtualWb extends utils.Adapter {
             const chargeMode = modeState.val;
 
             let evuPower = 0; 
-            let pvPower = 0;  
-            let batSoc = 100; 
+            let pvPower =  0;  
+            let batSoc =   100; 
             let currentPrice = 0.0; 
 
             if (this.config.evuState) {
