@@ -1,2 +1,2 @@
 # ioBroker.virtualwb
-virtualWB with corrected Materialize tab panes, robust selectId object browser, working range sliders, and readable font sizing.
+virtualWB with official ioBroker admin layout, native selectId object browser, working range sliders, and proper tab pane filtering.

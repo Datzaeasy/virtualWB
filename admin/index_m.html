@@ -31,15 +31,17 @@
                 }
             });
 
-            // Event Listener für Änderungen, damit der Speichern-Button aktiv wird
+            // Event Listener für Änderungen, damit ioBroker den Speichern-Button aktiviert
             $('.value').on('change input', function () {
                 onChange();
             });
 
             // Initialisierung Materialize Selects
-            $('select').formSelect();
+            if (typeof M !== 'undefined' && M.FormSelect) {
+                $('select').formSelect();
+            }
 
-            // Korrekte ioBroker Tabs Initialisierung ohne jQuery-UI Konflikte
+            // Korrekte ioBroker Tabs Initialisierung
             if (typeof M !== 'undefined' && M.Tabs) {
                 var elem = document.querySelector('.tabs');
                 if (elem) {
@@ -89,7 +91,7 @@
             });
             updateRangeVal('#minpv_ausschaltSoc', '#minpv_ausschaltSocVal', '%');
 
-            // Nativer ioBroker selectId Objekt-Auswahldialog
+            // Nativer ioBroker selectId Objekt-Auswahldialog mit echtem Objektbrowser
             $('.translateId').click(function () {
                 var $this = $(this);
                 var inputId = $this.attr('data-input');
@@ -107,12 +109,24 @@
                             }
                         });
                     });
+                } else if (typeof _selectId !== 'undefined') {
+                    _selectId.show($input.val(), function (newId) {
+                        if (newId !== undefined) {
+                            $input.val(newId).trigger('change').trigger('input');
+                            if (typeof M !== 'undefined' && M.updateTextFields) {
+                                M.updateTextFields();
+                            }
+                            onChange();
+                        }
+                    });
                 } else {
-                    console.error('initSelectId is not defined!');
-                    // Fallback Direkt-Prompt falls selectId nicht geladen ist
-                    var userVal = prompt('Datenpunkt-Pfad eingeben:', $input.val());
+                    console.warn('initSelectId & _selectId not found, falling back to prompt.');
+                    var userVal = prompt('Bitte ioBroker Datenpunkt-Pfad eingeben:', $input.val());
                     if (userVal !== null) {
                         $input.val(userVal).trigger('change').trigger('input');
+                        if (typeof M !== 'undefined' && M.updateTextFields) {
+                            M.updateTextFields();
+                        }
                         onChange();
                     }
                 }
@@ -150,20 +164,20 @@
         .card-panel { padding: 20px; border-radius: 4px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .section-title { font-size: 1.3rem; font-weight: 600; color: #1e88e5; margin-bottom: 15px; border-bottom: 2px solid #1e88e5; padding-bottom: 5px; }
         
-        /* Input & Label Fixes for Readability */
+        /* Input & Label Readability */
         label { font-size: 14px !important; color: #333 !important; }
         .input-field input[type=text], .input-field input[type=number] { font-size: 16px !important; }
         
         /* Object Picker Button & Input Layout */
         .input-field.with-button { position: relative; }
         .input-field.with-button input { width: calc(100% - 50px) !important; display: inline-block; }
-        .btn-floating.translateId { width: 40px; height: 40px; line-height: 40px; position: absolute; right: 0; top: 10px; box-shadow: none; }
+        .btn-floating.translateId { width: 40px; height: 40px; line-height: 40px; position: absolute; right: 0; top: 10px; box-shadow: none; cursor: pointer; }
         .btn-floating.translateId i { font-size: 20px; line-height: 40px; }
     </style>
 </head>
 <body>
     <div class="m adapter-container">
-        <!-- Top Nav / Tabs Header -->
+        <!-- Top Nav / Tabs Header in official ioBroker Materialize style -->
         <div class="row nav-row" style="background-color: #1e88e5;">
             <div class="col s12">
                 <ul class="tabs tabs-transparent">
