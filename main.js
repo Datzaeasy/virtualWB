@@ -14,10 +14,8 @@ class VirtualWb extends utils.Adapter {
     }
 
     async onReady() {
-        this.log.info('virtualWB Adapter gestartet (inkl. openWB 1.9 Regellogik & Speicher-Beachtung)!');
-
+        this.log.info('virtualWB Adapter gestartet (v0.4.0)!');
         this.subscribeStates('control.chargeMode');
-
         this.interval = setInterval(() => {
             this.runControlLoop();
         }, 10000);
@@ -29,10 +27,10 @@ class VirtualWb extends utils.Adapter {
             if (!modeState) return;
             const chargeMode = modeState.val;
 
-            let evuPower = 0; // W (+ Bezug, - Einspeisung)
-            let pvPower = 0;  // W
-            let batSoc = 100; // %
-            let currentPrice = 0.0; // EUR/kWh
+            let evuPower = 0; 
+            let pvPower = 0;  
+            let batSoc = 100; 
+            let currentPrice = 0.0; 
 
             if (this.config.evuState) {
                 const s = await this.getStateAsync(this.config.evuState);
@@ -51,12 +49,10 @@ class VirtualWb extends utils.Adapter {
                 if (s && typeof s.val === 'number') currentPrice = s.val;
             }
 
-            // Optional 70% Regelung Berücksichtigung
             let effectiveEvuPower = evuPower;
             if (this.config.pv_rule70 && chargeMode === 3) {
                 const rulePoint = parseFloat(this.config.pv_rule70_point) || 9000;
                 if (pvPower > rulePoint) {
-                    // Wenn PV über 70% Abregelungspunkt ist, virtuell anpassen
                     effectiveEvuPower -= (pvPower - rulePoint);
                 }
             }
@@ -72,44 +68,35 @@ class VirtualWb extends utils.Adapter {
                     let targetCurrent = 0;
 
                     if (chargeMode === 0) {
-                        targetCurrent = 0; // Aus
+                        targetCurrent = 0; 
                     } else if (chargeMode === 1) {
-                        targetCurrent = 16; // Sofortladen
+                        targetCurrent = 16; 
                     } else if (chargeMode === 2) {
-                        // Min + PV Modus
                         const minCurrent = parseInt(this.config.minpv_minCurrent, 10) || 6;
                         const einschaltSoc = parseFloat(this.config.minpv_einschaltSoc) || 0;
-                        
                         if (einschaltSoc === 0 || batSoc >= einschaltSoc) {
                             targetCurrent = minCurrent;
                         } else {
                             targetCurrent = 0;
                         }
                     } else if (chargeMode === 3) {
-                        // Nur PV Modus (mit openWB Parametern)
                         const einschwelle = parseFloat(this.config.pv_einschaltschwelle) || 1600;
                         const minCurrent = parseInt(this.config.pv_minCurrent, 10) || 6;
                         const batPriority = this.config.bat_priority || "speicher";
                         const minSoc = parseFloat(this.config.bat_minSoc) || 100;
 
-                        // Speicher-Beachtung Logik
                         let allowCharging = true;
                         if (batPriority === "speicher" && batSoc < minSoc) {
-                            // Speicher hat Vorrang, solange minSoc nicht erreicht ist
                             allowCharging = false;
                         }
 
-                        // Einspeisung prüfen (negative EVU-Power bedeutet Einspeisung)
-                        // ruleMode: "evu" vs "erzeugungsfaktor"
                         const triggerPower = -einschwelle; 
-
                         if (allowCharging && effectiveEvuPower <= triggerPower) {
                             targetCurrent = minCurrent;
                         } else {
                             targetCurrent = 0;
                         }
                     } else if (chargeMode === 4) {
-                        // Dynamischer Strompreis
                         const threshold = parseFloat(this.config.maxPriceThreshold) || 0.30;
                         if (currentPrice > 0 && currentPrice <= threshold) {
                             targetCurrent = 16;
@@ -123,7 +110,6 @@ class VirtualWb extends utils.Adapter {
                 }
             }
 
-            // Lastmanagement / Hausanschluss Schutzschleife
             const maxHouseCurrent = parseFloat(this.config.maxHouseCurrent) || 32;
             const maxHousePower = maxHouseCurrent * 230 * 3;
             let loadManagementActive = false;

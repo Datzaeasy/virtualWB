@@ -1,22 +1,20 @@
 {
   "name": "iobroker.virtualwb",
-  "version": "0.3.0",
-  "description": "virtualWB logic, up to 4 charging points, dynamic prices, load management, and full openWB 1.9 configuration tabs",
+  "version": "0.4.0",
+  "description": "virtualWB logic, up to 4 charging points, dynamic prices, load management, Materialize UI and native ioBroker object selector popups",
   "author": "User",
-  "homepage": "https://github.com/YOUR_GITHUB_USERNAME/iobroker.virtualwb",
+  "homepage": "https://github.com/Datzaeasy/iobroker.virtualwb",
   "license": "MIT",
   "keywords": [
     "ioBroker",
     "virtualWB",
     "openWB",
     "charging",
-    "photovoltaic",
-    "pv-laden",
-    "min+pv"
+    "photovoltaic"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_GITHUB_USERNAME/iobroker.virtualwb.git"
+    "url": "https://github.com/Datzaeasy/iobroker.virtualwb.git"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.1.6"

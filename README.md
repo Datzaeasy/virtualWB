@@ -1,2 +1,2 @@
 # ioBroker.virtualwb
-virtualWB with full openWB 1.9 tabbed configuration options.
+virtualWB with native Materialize design and object browser select dialogs.
