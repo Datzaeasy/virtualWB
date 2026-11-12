@@ -1,0 +1,214 @@
+{
+  "common": {
+    "name": "virtualwb",
+    "version": "0.3.0",
+    "news": {
+      "0.3.0": {
+        "en": "Added tabbed configuration mimicking openWB 1.9 (PV, Min+PV, Battery priority, 70% rule)",
+        "de": "Tabellen-Konfiguration im openWB 1.9 Stil hinzugefügt (PV, Min+PV, Speicher-Beachtung, 70%-Regel)"
+      }
+    },
+    "title": "virtualWB",
+    "titleLang": {
+      "en": "virtualWB",
+      "de": "virtualWB"
+    },
+    "desc": {
+      "en": "Virtual Wallbox with complete openWB 1.9 configuration options separated in tabs",
+      "de": "Virtuelle Wallbox mit vollständigen openWB 1.9 Einstellungsoptionen in Registerkarten"
+    },
+    "platforms": [
+      "Javascript/Node.js"
+    ],
+    "tier": 3,
+    "materialize": true,
+    "icon": "virtualwb.png",
+    "enabled": true,
+    "type": "energy",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "native": {
+      "evuState": "",
+      "pvState": "",
+      "batState": "",
+      "batSocState": "",
+      "priceState": "",
+      "maxPriceThreshold": 0.30,
+      "maxHouseCurrent": 32,
+      "numChargingPoints": 2,
+      "ruleMode": "evu",
+      "pv_einschaltschwelle": 1600,
+      "pv_einschaltverzögerung": 10,
+      "pv_abschaltschwelle": 0,
+      "pv_abschaltverzögerung": 60,
+      "pv_minCurrent": 6,
+      "pv_rule70": false,
+      "pv_rule70_point": 9000,
+      "bat_priority": "speicher",
+      "bat_reserve": 0,
+      "bat_disallowedPower": 1000,
+      "bat_minSoc": 100,
+      "minpv_minCurrent": 6,
+      "minpv_einschaltSoc": 0,
+      "minpv_ausschaltSoc": 0,
+      "cp1_enabled": true,
+      "cp1_name": "Ladepunkt 1",
+      "cp1_writeState": "",
+      "cp1_powerState": "",
+      "cp2_enabled": false,
+      "cp2_name": "Ladepunkt 2",
+      "cp2_writeState": "",
+      "cp2_powerState": "",
+      "cp3_enabled": false,
+      "cp3_name": "Ladepunkt 3",
+      "cp3_writeState": "",
+      "cp3_powerState": "",
+      "cp4_enabled": false,
+      "cp4_name": "Ladepunkt 4",
+      "cp4_writeState": "",
+      "cp4_powerState": ""
+    },
+    "objects": [],
+    "instanceObjects": [
+      {
+        "_id": "control.chargeMode",
+        "type": "state",
+        "common": {
+          "role": "value",
+          "name": "Lademodus (0=Aus, 1=Sofort, 2=Min+PV, 3=Nur PV, 4=Dynamisch)",
+          "type": "number",
+          "read": true,
+          "write": true,
+          "def": 2,
+          "min": 0,
+          "max": 4
+        },
+        "native": {}
+      },
+      {
+        "_id": "control.totalChargingPower",
+        "type": "state",
+        "common": {
+          "role": "value.power",
+          "name": "Gesamte Ladeleistung aller Ladepunkte (W)",
+          "type": "number",
+          "read": true,
+          "write": false,
+          "def": 0,
+          "unit": "W"
+        },
+        "native": {}
+      },
+      {
+        "_id": "control.loadManagementActive",
+        "type": "state",
+        "common": {
+          "role": "indicator",
+          "name": "Lastmanagement Schutzschleife aktiv (Drosselung)",
+          "type": "boolean",
+          "read": true,
+          "write": false,
+          "def": false
+        },
+        "native": {}
+      },
+      {
+        "_id": "cp1.active",
+        "type": "state",
+        "common": {
+          "role": "indicator",
+          "name": "LP1 aktiv / lädt",
+          "type": "boolean",
+          "read": true,
+          "write": false,
+          "def": false
+        },
+        "native": {}
+      },
+      {
+        "_id": "cp2.active",
+        "type": "state",
+        "common": {
+          "role": "indicator",
+          "name": "LP2 aktiv / lädt",
+          "type": "boolean",
+          "read": true,
+          "write": false,
+          "def": false
+        },
+        "native": {}
+      },
+      {
+        "_id": "cp3.active",
+        "type": "state",
+        "common": {
+          "role": "indicator",
+          "name": "LP3 aktiv / lädt",
+          "type": "boolean",
+          "read": true,
+          "write": false,
+          "def": false
+        },
+        "native": {}
+      },
+      {
+        "_id": "cp4.active",
+        "type": "state",
+        "common": {
+          "role": "indicator",
+          "name": "LP4 aktiv / lädt",
+          "type": "boolean",
+          "read": true,
+          "write": false,
+          "def": false
+        },
+        "native": {}
+      }
+    ]
+  },
+  "encryptedNative": [],
+  "protectedNative": [],
+  "native": {
+    "evuState": "",
+    "pvState": "",
+    "batState": "",
+    "batSocState": "",
+    "priceState": "",
+    "maxPriceThreshold": 0.30,
+    "maxHouseCurrent": 32,
+    "numChargingPoints": 2,
+    "ruleMode": "evu",
+    "pv_einschaltschwelle": 1600,
+    "pv_einschaltverzögerung": 10,
+    "pv_abschaltschwelle": 0,
+    "pv_abschaltverzögerung": 60,
+    "pv_minCurrent": 6,
+    "pv_rule70": false,
+    "pv_rule70_point": 9000,
+    "bat_priority": "speicher",
+    "bat_reserve": 0,
+    "bat_disallowedPower": 1000,
+    "bat_minSoc": 100,
+    "minpv_minCurrent": 6,
+    "minpv_einschaltSoc": 0,
+    "minpv_ausschaltSoc": 0,
+    "cp1_enabled": true,
+    "cp1_name": "Ladepunkt 1",
+    "cp1_writeState": "",
+    "cp1_powerState": "",
+    "cp2_enabled": false,
+    "cp2_name": "Ladepunkt 2",
+    "cp2_writeState": "",
+    "cp2_powerState": "",
+    "cp3_enabled": false,
+    "cp3_name": "Ladepunkt 3",
+    "cp3_writeState": "",
+    "cp3_powerState": "",
+    "cp4_enabled": false,
+    "cp4_name": "Ladepunkt 4",
+    "cp4_writeState": "",
+    "cp4_powerState": ""
+  },
+  "objects": []
+}

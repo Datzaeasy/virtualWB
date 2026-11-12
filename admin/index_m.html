@@ -1,0 +1,201 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/default/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="../../lib/css/highcharts.css">
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css">
+    <script type="text/javascript" src="../../lib/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/selectM.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+    <script type="text/javascript">
+        function load(settings, onChange) {
+            if (!settings) return;
+            $('.value').each(function () {
+                var $key = $(this);
+                var id = $key.attr('id');
+                if ($key.attr('type') === 'checkbox' || $key.is(':checkbox')) {
+                    $key.prop('checked', settings[id]).on('change', () => onChange());
+                } else {
+                    $key.val(settings[id]).on('input', () => onChange()).on('change', () => onChange());
+                }
+            });
+            // Range slider live updates
+            $('#maxHouseCurrent').on('input', function() { $('#maxHouseCurrentVal').text($(this).val() + ' A'); });
+            $('#maxHouseCurrentVal').text($('#maxHouseCurrent').val() + ' A');
+
+            $('#pv_minCurrent').on('input', function() { $('#pv_minCurrentVal').text($(this).val() + ' A'); });
+            $('#pv_minCurrentVal').text($('#pv_minCurrent').val() + ' A');
+
+            $('#minpv_minCurrent').on('input', function() { $('#minpv_minCurrentVal').text($(this).val() + ' A'); });
+            $('#minpv_minCurrentVal').text($('#minpv_minCurrent').val() + ' A');
+
+            $('#bat_minSoc').on('input', function() { $('#bat_minSocVal').text($(this).val() + ' %'); });
+            $('#bat_minSocVal').text($('#bat_minSoc').val() + ' %');
+
+            $('#minpv_einschaltSoc').on('input', function() { $('#minpv_einschaltSocVal').text($(this).val() + ' %'); });
+            $('#minpv_einschaltSocVal').text($('#minpv_einschaltSoc').val() + ' %');
+
+            $('#minpv_ausschaltSoc').on('input', function() { $('#minpv_ausschaltSocVal').text($(this).val() + ' %'); });
+            $('#minpv_ausschaltSocVal').text($('#minpv_ausschaltSoc').val() + ' %');
+
+            // Materialize tabs init
+            $('select').formSelect();
+            onChange(false);
+        }
+        function save(callback) {
+            var obj = {};
+            $('.value').each(function () {
+                var $key = $(this);
+                var id = $key.attr('id');
+                if ($key.is(':checkbox')) {
+                    obj[id] = $key.prop('checked');
+                } else {
+                    obj[id] = $key.val();
+                }
+            });
+            callback(obj);
+        }
+    </script>
+</head>
+<body>
+    <div class="m adapter-container">
+        <div class="row">
+            <div class="col s12 m4 l2">
+                <img src="virtualwb.png" class="logo">
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s3"><a class="active" href="#tab-general">Allgemeines & Lastmanagement</a></li>
+                    <li class="tab col s3"><a href="#tab-pv">Einstellungen PV-Laden</a></li>
+                    <li class="tab col s3"><a href="#tab-minpv">Einstellungen Min+PV</a></li>
+                    <li class="tab col s3"><a href="#tab-chargingpoints">Ladepunkte (1-4)</a></li>
+                </ul>
+            </div>
+
+            <!-- TAB 1: Allgemeines & Lastmanagement -->
+            <div id="tab-general" class="col s12 page">
+                <div class="row">
+                    <div class="col s12"><h5>Sensoren & Zähler</h5></div>
+                    <div class="col s12 m6"><input class="value" id="evuState" type="text" /><label for="evuState">EVU-Zähler Leistung (W)</label></div>
+                    <div class="col s12 m6"><input class="value" id="pvState" type="text" /><label for="pvState">PV-Anlage Leistung (W)</label></div>
+                    <div class="col s12 m6"><input class="value" id="batSocState" type="text" /><label for="batSocState">Hausbatterie SoC (%)</label></div>
+                    <div class="col s12 m6"><input class="value" id="priceState" type="text" /><label for="priceState">Aktueller Strompreis (€/kWh)</label></div>
+                </div>
+                <div class="row">
+                    <div class="col s12"><h5>Lastmanagement & Sicherheit</h5></div>
+                    <div class="col s12 m6"><input class="value" id="maxPriceThreshold" type="number" step="0.01" /><label for="maxPriceThreshold">Max. Preis-Schwelle (€/kWh) für dyn. Laden</label></div>
+                    <div class="col s12 m6">
+                        <label for="maxHouseCurrent"><strong>Max. Hausanschluss: <span id="maxHouseCurrentVal" style="color: #26a69a;">32 A</span></strong></label>
+                        <p class="range-field"><input class="value" id="maxHouseCurrent" type="range" min="10" max="63" step="1" /></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Einstellungen PV-Laden -->
+            <div id="tab-pv" class="col s12 page">
+                <div class="row">
+                    <div class="col s12"><h5>Allgemeine PV-Einstellungen</h5></div>
+                    <div class="col s12 m6"><input class="value" id="pv_einschaltschwelle" type="number" /><label for="pv_einschaltschwelle">Einschaltschwelle (W)</label></div>
+                    <div class="col s12 m6"><input class="value" id="pv_einschaltverzögerung" type="number" /><label for="pv_einschaltverzögerung">Einschaltverzögerung (Sek.)</label></div>
+                    <div class="col s12 m6"><input class="value" id="pv_abschaltschwelle" type="number" /><label for="pv_abschaltschwelle">Abschaltschwelle (W)</label></div>
+                    <div class="col s12 m6"><input class="value" id="pv_abschaltverzögerung" type="number" /><label for="pv_abschaltverzögerung">Abschaltverzögerung (Sek.)</label></div>
+                    <div class="col s12">
+                        <label for="pv_minCurrent"><strong>Mindeststromstärke PV-Laden: <span id="pv_minCurrentVal" style="color: #26a69a;">6 A</span></strong></label>
+                        <p class="range-field"><input class="value" id="pv_minCurrent" type="range" min="6" max="16" step="1" /></p>
+                    </div>
+                    <div class="col s12 m6">
+                        <label><input class="value" id="pv_rule70" type="checkbox" /><span>70%-Regelung aktiv</span></label>
+                    </div>
+                    <div class="col s12 m6"><input class="value" id="pv_rule70_point" type="number" /><label for="pv_rule70_point">70%-Regelpunkt (W)</label></div>
+                </div>
+                <div class="row" style="border-top: 1px solid #ddd; padding-top: 10px;">
+                    <div class="col s12"><h5>Speicher-Beachtung (EV-Vorrang vs Speicher-Vorrang)</h5></div>
+                    <div class="col s12 m6">
+                        <label for="bat_priority">Vorrang-Steuerung</label>
+                        <select class="value" id="bat_priority">
+                            <option value="speicher">Speichervorrang</option>
+                            <option value="ev">EV-Vorrang</option>
+                        </select>
+                    </div>
+                    <div class="col s12 m6"><input class="value" id="bat_reserve" type="number" /><label for="bat_reserve">Ladeleistung-Reserve (W)</label></div>
+                    <div class="col s12 m6"><input class="value" id="bat_disallowedPower" type="number" /><label for="bat_disallowedPower">Erlaubte Entladeleistung (W)</label></div>
+                    <div class="col s12">
+                        <label for="bat_minSoc"><strong>Minimaler Entlade-SoC (Speicher-Vorrang bis SoC): <span id="bat_minSocVal" style="color: #26a69a;">100 %</span></strong></label>
+                        <p class="range-field"><input class="value" id="bat_minSoc" type="range" min="0" max="100" step="1" /></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Einstellungen Min+PV -->
+            <div id="tab-minpv" class="col s12 page">
+                <div class="row">
+                    <div class="col s12"><h5>Einstellungen für Min+PV-Laden</h5></div>
+                    <div class="col s12">
+                        <label for="minpv_minCurrent"><strong>Mindeststromstärke Min+PV: <span id="minpv_minCurrentVal" style="color: #26a69a;">6 A</span></strong></label>
+                        <p class="range-field"><input class="value" id="minpv_minCurrent" type="range" min="6" max="16" step="1" /></p>
+                    </div>
+                    <div class="col s12"><h5>Speicher-Beachtung im Min+PV Modus</h5></div>
+                    <div class="col s12 m6">
+                        <label for="minpv_einschaltSoc"><strong>Einschalt-SoC: <span id="minpv_einschaltSocVal" style="color: #26a69a;">0 %</span></strong></label>
+                        <p class="range-field"><input class="value" id="minpv_einschaltSoc" type="range" min="0" max="100" step="1" /></p>
+                    </div>
+                    <div class="col s12 m6">
+                        <label for="minpv_ausschaltSoc"><strong>Ausschalt-SoC: <span id="minpv_ausschaltSocVal" style="color: #26a69a;">0 %</span></strong></label>
+                        <p class="range-field"><input class="value" id="minpv_ausschaltSoc" type="range" min="0" max="100" step="1" /></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: Ladepunkte (1-4) -->
+            <div id="tab-chargingpoints" class="col s12 page">
+                <div class="row">
+                    <div class="col s12">
+                        <h5>Anzahl aktive Ladepunkte</h5>
+                        <select class="value" id="numChargingPoints">
+                            <option value="1">1 Ladepunkt</option>
+                            <option value="2">2 Ladepunkte</option>
+                            <option value="3">3 Ladepunkte</option>
+                            <option value="4">4 Ladepunkte</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- LP 1 -->
+                <div class="row" style="border-top: 1px solid #ccc; padding-top: 10px;">
+                    <div class="col s12"><label><input class="value" id="cp1_enabled" type="checkbox" /><span>Ladepunkt 1 aktivieren</span></label></div>
+                    <div class="col s12 m4"><input class="value" id="cp1_name" type="text" /><label for="cp1_name">Name LP1</label></div>
+                    <div class="col s12 m4"><input class="value" id="cp1_writeState" type="text" /><label for="cp1_writeState">Schreib-Datenpunkt (A)</label></div>
+                    <div class="col s12 m4"><input class="value" id="cp1_powerState" type="text" /><label for="cp1_powerState">Leistungs-Datenpunkt (W)</label></div>
+                </div>
+                <!-- LP 2 -->
+                <div class="row" style="border-top: 1px solid #ccc; padding-top: 10px;">
+                    <div class="col s12"><label><input class="value" id="cp2_enabled" type="checkbox" /><span>Ladepunkt 2 aktivieren</span></label></div>
+                    <div class="col s12 m4"><input class="value" id="cp2_name" type="text" /><label for="cp2_name">Name LP2</label></div>
+                    <div class="col s12 m4"><input class="value" id="cp2_writeState" type="text" /><label for="cp2_writeState">Schreib-Datenpunkt (A)</label></div>
+                    <div class="col s12 m4"><input class="value" id="cp2_powerState" type="text" /><label for="cp2_powerState">Leistungs-Datenpunkt (W)</label></div>
+                </div>
+                <!-- LP 3 -->
+                <div class="row" style="border-top: 1px solid #ccc; padding-top: 10px;">
+                    <div class="col s12"><label><input class="value" id="cp3_enabled" type="checkbox" /><span>Ladepunkt 3 aktivieren</span></label></div>
+                    <div class="col s12 m4"><input class="value" id="cp3_name" type="text" /><label for="cp3_name">Name LP3</label></div>
+                    <div class="col s12 m4"><input class="value" id="cp3_writeState" type="text" /><label for="cp3_writeState">Schreib-Datenpunkt (A)</label></div>
+                    <div class="col s12 m4"><input class="value" id="cp3_powerState" type="text" /><label for="cp3_powerState">Leistungs-Datenpunkt (W)</label></div>
+                </div>
+                <!-- LP 4 -->
+                <div class="row" style="border-top: 1px solid #ccc; padding-top: 10px;">
+                    <div class="col s12"><label><input class="value" id="cp4_enabled" type="checkbox" /><span>Ladepunkt 4 aktivieren</span></label>
+                    </div>
+                    <div class="col s12 m4"><input class="value" id="cp4_name" type="text" /><label for="cp4_name">Name LP4</label></div>
+                    <div class="col s12 m4"><input class="value" id="cp4_writeState" type="text" /><label for="cp4_writeState">Schreib-Datenpunkt (A)</label></div>
+                    <div class="col s12 m4"><input class="value" id="cp4_powerState" type="text" /><label for="cp4_powerState">Leistungs-Datenpunkt (W)</label></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

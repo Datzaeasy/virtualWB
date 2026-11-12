@@ -1,0 +1,42 @@
+{
+  "name": "iobroker.virtualwb",
+  "version": "0.3.0",
+  "description": "virtualWB logic, up to 4 charging points, dynamic prices, load management, and full openWB 1.9 configuration tabs",
+  "author": "User",
+  "homepage": "https://github.com/YOUR_GITHUB_USERNAME/iobroker.virtualwb",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "virtualWB",
+    "openWB",
+    "charging",
+    "photovoltaic",
+    "pv-laden",
+    "min+pv"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_GITHUB_USERNAME/iobroker.virtualwb.git"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.1.6"
+  },
+  "devDependencies": {
+    "@iobroker/testing": "^4.1.0",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "typescript": "^5.0.4"
+  },
+  "main": "main.js",
+  "files": [
+    "admin/",
+    "lib/",
+    "main.js",
+    "io-package.json",
+    "LICENSE"
+  ],
+  "private": false,
+  "engines": {
+    "node": ">= 18.0.0"
+  }
+}
