@@ -1,11 +1,11 @@
 {
   "common": {
     "name": "virtualwb",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "news": {
-      "0.5.0": {
-        "en": "Fixed native ioBroker selectId object browser popups and reorganized clean tab views",
-        "de": "Native ioBroker selectId Objektauswahl-Dialoge korrigiert und übersichtliche Reiter-Ansichten bereinigt"
+      "0.6.0": {
+        "en": "Fixed Materialize tab structure, native object selector, range slider bindings and increased font sizing",
+        "de": "Materialize-Tab-Struktur, native Objektauswahl, Schieberegler-Binding behoben und Schriftgröße vergrößert"
       }
     },
     "title": "virtualWB",
@@ -14,8 +14,8 @@
       "de": "virtualWB"
     },
     "desc": {
-      "en": "Virtual Wallbox with native selectId object picker and structured tab pages",
-      "de": "Virtuelle Wallbox mit nativem selectId Objekt-Auswahldialog und strukturierten Reiterseiten"
+      "en": "Virtual Wallbox with fixed tab visibility, robust selectId object picker, range sliders and readable fonts",
+      "de": "Virtuelle Wallbox mit korrekter Reiter-Sichtbarkeit, robustem selectId Objekt-Picker, Schiebereglern und lesbarer Schrift"
     },
     "platforms": [
       "Javascript/Node.js"

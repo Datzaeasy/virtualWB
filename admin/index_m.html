@@ -36,9 +36,16 @@
                 onChange();
             });
 
-            // Initialisierung Materialize Selects & Tabs
+            // Initialisierung Materialize Selects
             $('select').formSelect();
-            $('.tabs').tabs();
+
+            // Korrekte ioBroker Tabs Initialisierung ohne jQuery-UI Konflikte
+            if (typeof M !== 'undefined' && M.Tabs) {
+                var elem = document.querySelector('.tabs');
+                if (elem) {
+                    M.Tabs.init(elem);
+                }
+            }
 
             // Range Slider live text updates & onChange trigger
             function updateRangeVal(selector, valSelector, unit) {
@@ -46,59 +53,70 @@
                 $(valSelector).text(val + ' ' + unit);
             }
 
-            $('#maxHouseCurrent').on('input', function() {
+            $('#maxHouseCurrent').on('input change', function() {
                 updateRangeVal('#maxHouseCurrent', '#maxHouseCurrentVal', 'A');
                 onChange();
             });
             updateRangeVal('#maxHouseCurrent', '#maxHouseCurrentVal', 'A');
 
-            $('#pv_minCurrent').on('input', function() {
+            $('#pv_minCurrent').on('input change', function() {
                 updateRangeVal('#pv_minCurrent', '#pv_minCurrentVal', 'A');
                 onChange();
             });
             updateRangeVal('#pv_minCurrent', '#pv_minCurrentVal', 'A');
 
-            $('#minpv_minCurrent').on('input', function() {
+            $('#minpv_minCurrent').on('input change', function() {
                 updateRangeVal('#minpv_minCurrent', '#minpv_minCurrentVal', 'A');
                 onChange();
             });
             updateRangeVal('#minpv_minCurrent', '#minpv_minCurrentVal', 'A');
 
-            $('#bat_minSoc').on('input', function() {
+            $('#bat_minSoc').on('input change', function() {
                 updateRangeVal('#bat_minSoc', '#bat_minSocVal', '%');
                 onChange();
             });
             updateRangeVal('#bat_minSoc', '#bat_minSocVal', '%');
 
-            $('#minpv_einschaltSoc').on('input', function() {
+            $('#minpv_einschaltSoc').on('input change', function() {
                 updateRangeVal('#minpv_einschaltSoc', '#minpv_einschaltSocVal', '%');
                 onChange();
             });
             updateRangeVal('#minpv_einschaltSoc', '#minpv_einschaltSocVal', '%');
 
-            $('#minpv_ausschaltSoc').on('input', function() {
+            $('#minpv_ausschaltSoc').on('input change', function() {
                 updateRangeVal('#minpv_ausschaltSoc', '#minpv_ausschaltSocVal', '%');
                 onChange();
             });
             updateRangeVal('#minpv_ausschaltSoc', '#minpv_ausschaltSocVal', '%');
 
             // Nativer ioBroker selectId Objekt-Auswahldialog
-            if (typeof initSelectId === 'function') {
-                $('.translateId').click(function () {
-                    var $this = $(this);
-                    var $input = $('#' + $this.attr('data-input'));
+            $('.translateId').click(function () {
+                var $this = $(this);
+                var inputId = $this.attr('data-input');
+                var $input = $('#' + inputId);
+                
+                if (typeof initSelectId === 'function') {
                     initSelectId(function (sid) {
                         sid.show($input.val(), function (newId) {
                             if (newId !== undefined) {
                                 $input.val(newId).trigger('change').trigger('input');
+                                if (typeof M !== 'undefined' && M.updateTextFields) {
+                                    M.updateTextFields();
+                                }
                                 onChange();
                             }
                         });
                     });
-                });
-            } else {
-                console.warn('initSelectId is not available!');
-            }
+                } else {
+                    console.error('initSelectId is not defined!');
+                    // Fallback Direkt-Prompt falls selectId nicht geladen ist
+                    var userVal = prompt('Datenpunkt-Pfad eingeben:', $input.val());
+                    if (userVal !== null) {
+                        $input.val(userVal).trigger('change').trigger('input');
+                        onChange();
+                    }
+                }
+            });
 
             onChange(false);
             if (typeof M !== 'undefined' && M.updateTextFields) {
@@ -123,16 +141,24 @@
         }
     </script>
     <style>
-        body { background-color: #fafafa; }
-        .m.adapter-container { padding: 0 20px 20px 20px; }
+        body { background-color: #fafafa; font-size: 15px !important; }
+        .m.adapter-container { padding: 0 20px 20px 20px; font-size: 15px; }
         .nav-row { margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .tabs.tabs-transparent .tab a { color: rgba(255,255,255,0.7); font-weight: 500; }
-        .tabs.tabs-transparent .tab a.active { color: #ffffff; font-weight: 700; background-color: rgba(0,0,0,0.1); }
+        .tabs.tabs-transparent .tab a { color: rgba(255,255,255,0.8); font-weight: 500; font-size: 16px; }
+        .tabs.tabs-transparent .tab a.active { color: #ffffff; font-weight: 700; background-color: rgba(0,0,0,0.15); }
         .tabs.tabs-transparent .indicator { background-color: #ffffff; height: 3px; }
         .card-panel { padding: 20px; border-radius: 4px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .section-title { font-size: 1.2rem; font-weight: 600; color: #1e88e5; margin-bottom: 15px; border-bottom: 2px solid #1e88e5; padding-bottom: 5px; }
-        .btn-floating.translateId { width: 36px; height: 36px; line-height: 36px; position: absolute; right: 0; top: 10px; }
-        .input-field.with-button input { width: calc(100% - 45px); display: inline-block; }
+        .section-title { font-size: 1.3rem; font-weight: 600; color: #1e88e5; margin-bottom: 15px; border-bottom: 2px solid #1e88e5; padding-bottom: 5px; }
+        
+        /* Input & Label Fixes for Readability */
+        label { font-size: 14px !important; color: #333 !important; }
+        .input-field input[type=text], .input-field input[type=number] { font-size: 16px !important; }
+        
+        /* Object Picker Button & Input Layout */
+        .input-field.with-button { position: relative; }
+        .input-field.with-button input { width: calc(100% - 50px) !important; display: inline-block; }
+        .btn-floating.translateId { width: 40px; height: 40px; line-height: 40px; position: absolute; right: 0; top: 10px; box-shadow: none; }
+        .btn-floating.translateId i { font-size: 20px; line-height: 40px; }
     </style>
 </head>
 <body>
@@ -336,7 +362,7 @@
                     <div class="input-field col s12 m4 with-button">
                         <input class="value" id="cp4_powerState" type="text" />
                         <label for="cp4_powerState">Leistungs-Datenpunkt (W)</label>
-                        <a class="btn-floating waves-effect waves-light blue translateId" data-input="cp4_powerState" title="Objekt auswählen"><i class="item"></i></a>
+                        <a class="btn-floating waves-effect waves-light blue translateId" data-input="cp4_powerState" title="Objekt auswählen"><i class="material-icons">list</i></a>
                     </div>
                 </div>
             </div>

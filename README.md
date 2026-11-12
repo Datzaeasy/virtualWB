@@ -1,2 +1,2 @@
 # ioBroker.virtualwb
-virtualWB with fully functional selectId object picker, clean card layout, and isolated tab sections.
+virtualWB with corrected Materialize tab panes, robust selectId object browser, working range sliders, and readable font sizing.
