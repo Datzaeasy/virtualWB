@@ -1,7 +1,7 @@
 {
   "name": "iobroker.virtualwb",
-  "version": "1.0.0",
-  "description": "virtualWB adapter in pure JavaScript and JSONConfig UI (no HTML/CSS)",
+  "version": "1.0.1",
+  "description": "virtualWB adapter in pure JavaScript and JSONConfig UI with explicit mode fix",
   "author": "User",
   "homepage": "https://github.com/Datzaeasy/iobroker.virtualwb",
   "license": "MIT",

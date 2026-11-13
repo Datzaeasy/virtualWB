@@ -1,2 +1,2 @@
 # ioBroker.virtualwb
-virtualWB adapter in 100% pure JavaScript & native JSONConfig UI (zero HTML/CSS).
+virtualWB adapter with explicit daemon mode fix in io-package.json.

@@ -14,7 +14,7 @@ class VirtualWb extends utils.Adapter {
     }
 
     async onReady() {
-        this.log.info('virtualWB Adapter gestartet (v1.0.0 - pure JS / jsonConfig)!');
+        this.log.info('virtualWB Adapter gestartet (v1.0.1 - mode daemon fix)!');
         this.subscribeStates('control.chargeMode');
         this.interval = setInterval(() => {
             this.runControlLoop();

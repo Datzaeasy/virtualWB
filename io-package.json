@@ -1,11 +1,11 @@
 {
   "common": {
     "name": "virtualwb",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "news": {
-      "1.0.0": {
-        "en": "Complete rewrite to pure JavaScript and native ioBroker jsonConfig UI (100% JS/JSON, zero HTML/CSS)",
-        "de": "Kompletter Umbau auf reines JavaScript und native ioBroker jsonConfig Oberfläche (100% JS/JSON, kein HTML/CSS)"
+      "1.0.1": {
+        "en": "Fix invalid mode undefined error by explicitly defining common.mode as daemon in io-package.json",
+        "de": "Behebung des Invalid-Mode-Undefined-Fehlers durch explizite Definition von common.mode als daemon in der io-package.json"
       }
     },
     "title": "virtualWB",
@@ -21,6 +21,7 @@
       "Javascript/Node.js"
     ],
     "tier": 3,
+    "mode": "daemon",
     "adminUI": {
       "config": "json"
     },
