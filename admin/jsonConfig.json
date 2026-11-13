@@ -1,0 +1,378 @@
+{
+  "i18n": false,
+  "type": "tabs",
+  "items": {
+    "tabGeneral": {
+      "type": "panel",
+      "label": "Allgemeines & Lastmanagement",
+      "items": {
+        "headerSensors": {
+          "type": "header",
+          "text": "Sensoren & Zähler",
+          "size": 2
+        },
+        "evuState": {
+          "type": "objectId",
+          "label": "EVU-Zähler Leistung (W)",
+          "xs": 12,
+          "sm": 6
+        },
+        "pvState": {
+          "type": "objectId",
+          "label": "PV-Anlage Leistung (W)",
+          "xs": 12,
+          "sm": 6
+        },
+        "batSocState": {
+          "type": "objectId",
+          "label": "Hausbatterie SoC (%)",
+          "xs": 12,
+          "sm": 6
+        },
+        "priceState": {
+          "type": "objectId",
+          "label": "Aktueller Strompreis (€/kWh)",
+          "xs": 12,
+          "sm": 6
+        },
+        "headerLoad": {
+          "type": "header",
+          "text": "Lastmanagement & Dynamischer Tarif",
+          "size": 2
+        },
+        "maxPriceThreshold": {
+          "type": "number",
+          "label": "Max. Preis-Schwelle (€/kWh) für dyn. Laden",
+          "step": 0.01,
+          "min": 0,
+          "max": 5,
+          "xs": 12,
+          "sm": 6
+        },
+        "maxHouseCurrent": {
+          "type": "slider",
+          "label": "Max. Hausanschluss / Hauptsicherung (A)",
+          "min": 10,
+          "max": 63,
+          "step": 1,
+          "unit": "A",
+          "xs": 12,
+          "sm": 6
+        }
+      }
+    },
+    "tabPv": {
+      "type": "panel",
+      "label": "Einstellungen PV-Laden",
+      "items": {
+        "headerPvGeneral": {
+          "type": "header",
+          "text": "Allgemeine PV-Einstellungen",
+          "size": 2
+        },
+        "pv_einschaltschwelle": {
+          "type": "number",
+          "label": "Einschaltschwelle (W)",
+          "xs": 12,
+          "sm": 6
+        },
+        "pv_einschaltverzögerung": {
+          "type": "number",
+          "label": "Einschaltverzögerung (Sek.)",
+          "xs": 12,
+          "sm": 6
+        },
+        "pv_abschaltschwelle": {
+          "type": "number",
+          "label": "Abschaltschwelle (W)",
+          "xs": 12,
+          "sm": 6
+        },
+        "pv_abschaltverzögerung": {
+          "type": "number",
+          "label": "Abschaltverzögerung (Sek.)",
+          "xs": 12,
+          "sm": 6
+        },
+        "pv_minCurrent": {
+          "type": "slider",
+          "label": "Mindeststromstärke PV-Laden (A)",
+          "min": 6,
+          "max": 16,
+          "step": 1,
+          "unit": "A",
+          "xs": 12
+        },
+        "pv_rule70": {
+          "type": "checkbox",
+          "label": "70%-Regelung aktiv",
+          "xs": 12,
+          "sm": 6
+        },
+        "pv_rule70_point": {
+          "type": "number",
+          "label": "70%-Regelpunkt (W)",
+          "disabled": "!data.pv_rule70",
+          "xs": 12,
+          "sm": 6
+        },
+        "headerBattery": {
+          "type": "header",
+          "text": "Speicher-Beachtung (EV-Vorrang vs. Speicher-Vorrang)",
+          "size": 2
+        },
+        "bat_priority": {
+          "type": "select",
+          "label": "Vorrang-Steuerung",
+          "options": [
+            {
+              "label": "Speichervorrang",
+              "value": "speicher"
+            },
+            {
+              "label": "EV-Vorrang",
+              "value": "ev"
+            }
+          ],
+          "xs": 12,
+          "sm": 6
+        },
+        "bat_reserve": {
+          "type": "number",
+          "label": "Ladeleistung-Reserve (W)",
+          "xs": 12,
+          "sm": 6
+        },
+        "bat_disallowedPower": {
+          "type": "number",
+          "label": "Erlaubte Entladeleistung (W)",
+          "xs": 12,
+          "sm": 6
+        },
+        "bat_minSoc": {
+          "type": "slider",
+          "label": "Minimaler Entlade-SoC (Speicher-Vorrang bis SoC %)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "xs": 12
+        }
+      }
+    },
+    "tabMinPv": {
+      "type": "panel",
+      "label": "Einstellungen Min+PV",
+      "items": {
+        "headerMinPv": {
+          "type": "header",
+          "text": "Einstellungen für Min+PV-Laden",
+          "size": 2
+        },
+        "minpv_minCurrent": {
+          "type": "slider",
+          "label": "Mindeststromstärke Min+PV (A)",
+          "min": 6,
+          "max": 16,
+          "step": 1,
+          "unit": "A",
+          "xs": 12
+        },
+        "headerMinPvBat": {
+          "type": "header",
+          "text": "Speicher-Beachtung im Min+PV Modus",
+          "size": 2
+        },
+        "minpv_einschaltSoc": {
+          "type": "slider",
+          "label": "Einschalt-SoC (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "xs": 12,
+          "sm": 6
+        },
+        "minpv_ausschaltSoc": {
+          "type": "slider",
+          "label": "Ausschalt-SoC (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "xs": 12,
+          "sm": 6
+        }
+      }
+    },
+    "tabChargingPoints": {
+      "type": "panel",
+      "label": "Ladepunkte",
+      "items": {
+        "numChargingPoints": {
+          "type": "select",
+          "label": "Anzahl aktive Ladepunkte",
+          "options": [
+            {
+              "label": "1 Ladepunkt",
+              "value": 1
+            },
+            {
+              "label": "2 Ladepunkte",
+              "value": 2
+            },
+            {
+              "label": "3 Ladepunkte",
+              "value": 3
+            },
+            {
+              "label": "4 Ladepunkte",
+              "value": 4
+            }
+          ],
+          "xs": 12,
+          "sm": 6
+        },
+        "headerCp1": {
+          "type": "header",
+          "text": "Ladepunkt 1",
+          "size": 3
+        },
+        "cp1_enabled": {
+          "type": "checkbox",
+          "label": "Ladepunkt 1 aktivieren",
+          "xs": 12
+        },
+        "cp1_name": {
+          "type": "text",
+          "label": "Name LP1",
+          "disabled": "!data.cp1_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "cp1_writeState": {
+          "type": "objectId",
+          "label": "Schreib-Datenpunkt (A)",
+          "disabled": "!data.cp1_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "cp1_powerState": {
+          "type": "objectId",
+          "label": "Leistungs-Datenpunkt (W)",
+          "disabled": "!data.cp1_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "headerCp2": {
+          "type": "header",
+          "text": "Ladepunkt 2",
+          "size": 3,
+          "hidden": "data.numChargingPoints < 2"
+        },
+        "cp2_enabled": {
+          "type": "checkbox",
+          "label": "Ladepunkt 2 aktivieren",
+          "hidden": "data.numChargingPoints < 2",
+          "xs": 12
+        },
+        "cp2_name": {
+          "type": "text",
+          "label": "Name LP2",
+          "hidden": "data.numChargingPoints < 2",
+          "disabled": "!data.cp2_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "cp2_writeState": {
+          "type": "objectId",
+          "label": "Schreib-Datenpunkt (A)",
+          "hidden": "data.numChargingPoints < 2",
+          "disabled": "!data.cp2_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "cp2_powerState": {
+          "type": "objectId",
+          "label": "Leistungs-Datenpunkt (W)",
+          "hidden": "data.numChargingPoints < 2",
+          "disabled": "!data.cp2_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "headerCp3": {
+          "type": "header",
+          "text": "Ladepunkt 3",
+          "size": 3,
+          "hidden": "data.numChargingPoints < 3"
+        },
+        "cp3_enabled": {
+          "type": "checkbox",
+          "label": "Ladepunkt 3 aktivieren",
+          "hidden": "data.numChargingPoints < 3",
+          "xs": 12
+        },
+        "cp3_name": {
+          "type": "text",
+          "label": "Name LP3",
+          "hidden": "data.numChargingPoints < 3",
+          "disabled": "!data.cp3_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "cp3_writeState": {
+          "type": "objectId",
+          "label": "Schreib-Datenpunkt (A)",
+          "hidden": "data.numChargingPoints < 3",
+          "disabled": "!data.cp3_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "cp3_powerState": {
+          "type": "objectId",
+          "label": "Leistungs-Datenpunkt (W)",
+          "hidden": "data.numChargingPoints < 3",
+          "disabled": "!data.cp3_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "headerCp4": {
+          "type": "header",
+          "text": "Ladepunkt 4",
+          "size": 3,
+          "hidden": "data.numChargingPoints < 4"
+        },
+        "cp4_enabled": {
+          "type": "checkbox",
+          "label": "Ladepunkt 4 aktivieren",
+          "hidden": "data.numChargingPoints < 4",
+          "xs": 12
+        },
+        "cp4_name": {
+          "type": "text",
+          "label": "Name LP4",
+          "hidden": "data.numChargingPoints < 4",
+          "disabled": "!data.cp4_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "cp4_writeState": {
+          "type": "objectId",
+          "label": "Schreib-Datenpunkt (A)",
+          "hidden": "data.numChargingPoints < 4",
+          "disabled": "!data.cp4_enabled",
+          "xs": 12,
+          "sm": 4
+        },
+        "cp4_powerState": {
+          "type": "objectId",
+          "label": "Leistungs-Datenpunkt (W)",
+          "hidden": "data.numChargingPoints < 4",
+          "disabled": "!data.cp4_enabled",
+          "xs": 12,
+          "sm": 4
+        }
+      }
+    }
+  }
+}

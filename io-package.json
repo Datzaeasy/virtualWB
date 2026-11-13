@@ -1,11 +1,11 @@
 {
   "common": {
     "name": "virtualwb",
-    "version": "0.8.0",
+    "version": "1.0.0",
     "news": {
-      "0.8.0": {
-        "en": "Aligned admin interface layout strictly with ioBroker.go-e-charger style: pure Materialize tabs, translations, selectId and responsive design",
-        "de": "Admin-Oberfläche strikt nach ioBroker.go-e-charger Vorbild angepasst: echte Materialize Tabs, Übersetzungen, selectId und responsives Design"
+      "1.0.0": {
+        "en": "Complete rewrite to pure JavaScript and native ioBroker jsonConfig UI (100% JS/JSON, zero HTML/CSS)",
+        "de": "Kompletter Umbau auf reines JavaScript und native ioBroker jsonConfig Oberfläche (100% JS/JSON, kein HTML/CSS)"
       }
     },
     "title": "virtualWB",
@@ -14,14 +14,16 @@
       "de": "virtualWB"
     },
     "desc": {
-      "en": "Virtual Wallbox adapter styled like official ioBroker go-e-charger",
-      "de": "Virtuelle Wallbox Adapter im Stil des offiziellen ioBroker go-e-charger"
+      "en": "Virtual Wallbox adapter with native JSONConfig UI",
+      "de": "Virtuelle Wallbox Adapter mit nativer JSONConfig Oberfläche"
     },
     "platforms": [
       "Javascript/Node.js"
     ],
     "tier": 3,
-    "materialize": true,
+    "adminUI": {
+      "config": "json"
+    },
     "icon": "virtualwb.png",
     "enabled": true,
     "type": "energy",
@@ -31,13 +33,11 @@
     "native": {
       "evuState": "",
       "pvState": "",
-      "batState": "",
       "batSocState": "",
       "priceState": "",
       "maxPriceThreshold": 0.30,
       "maxHouseCurrent": 32,
       "numChargingPoints": 2,
-      "ruleMode": "evu",
       "pv_einschaltschwelle": 1600,
       "pv_einschaltverzögerung": 10,
       "pv_abschaltschwelle": 0,
@@ -172,13 +172,11 @@
   "native": {
     "evuState": "",
     "pvState": "",
-    "batState": "",
     "batSocState": "",
     "priceState": "",
     "maxPriceThreshold": 0.30,
     "maxHouseCurrent": 32,
     "numChargingPoints": 2,
-    "ruleMode": "evu",
     "pv_einschaltschwelle": 1600,
     "pv_einschaltverzögerung": 10,
     "pv_abschaltschwelle": 0,

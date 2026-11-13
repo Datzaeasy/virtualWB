@@ -14,7 +14,7 @@ class VirtualWb extends utils.Adapter {
     }
 
     async onReady() {
-        this.log.info('virtualWB Adapter gestartet (v0.8.0 - go-e-charger style)!');
+        this.log.info('virtualWB Adapter gestartet (v1.0.0 - pure JS / jsonConfig)!');
         this.subscribeStates('control.chargeMode');
         this.interval = setInterval(() => {
             this.runControlLoop();
@@ -27,25 +27,25 @@ class VirtualWb extends utils.Adapter {
             if (!modeState) return;
             const chargeMode = modeState.val;
 
-            let evuPower = 0; 
-            let pvPower =  0;  
-            let batSoc =   100; 
-            let currentPrice = 0.0; 
+            let evuPower = 0;
+            let pvPower = 0;
+            let batSoc = 100;
+            let currentPrice = 0.0;
 
             if (this.config.evuState) {
-                const s = await this.getStateAsync(this.config.evuState);
+                const s = await this.getForeignStateAsync(this.config.evuState);
                 if (s && typeof s.val === 'number') evuPower = s.val;
             }
             if (this.config.pvState) {
-                const s = await this.getStateAsync(this.config.pvState);
+                const s = await this.getForeignStateAsync(this.config.pvState);
                 if (s && typeof s.val === 'number') pvPower = s.val;
             }
             if (this.config.batSocState) {
-                const s = await this.getStateAsync(this.config.batSocState);
+                const s = await this.getForeignStateAsync(this.config.batSocState);
                 if (s && typeof s.val === 'number') batSoc = s.val;
             }
             if (this.config.priceState) {
-                const s = await this.getStateAsync(this.config.priceState);
+                const s = await this.getForeignStateAsync(this.config.priceState);
                 if (s && typeof s.val === 'number') currentPrice = s.val;
             }
 
@@ -68,9 +68,9 @@ class VirtualWb extends utils.Adapter {
                     let targetCurrent = 0;
 
                     if (chargeMode === 0) {
-                        targetCurrent = 0; 
+                        targetCurrent = 0;
                     } else if (chargeMode === 1) {
-                        targetCurrent = 16; 
+                        targetCurrent = 16;
                     } else if (chargeMode === 2) {
                         const minCurrent = parseInt(this.config.minpv_minCurrent, 10) || 6;
                         const einschaltSoc = parseFloat(this.config.minpv_einschaltSoc) || 0;
@@ -82,15 +82,15 @@ class VirtualWb extends utils.Adapter {
                     } else if (chargeMode === 3) {
                         const einschwelle = parseFloat(this.config.pv_einschaltschwelle) || 1600;
                         const minCurrent = parseInt(this.config.pv_minCurrent, 10) || 6;
-                        const batPriority = this.config.bat_priority || "speicher";
+                        const batPriority = this.config.bat_priority || 'speicher';
                         const minSoc = parseFloat(this.config.bat_minSoc) || 100;
 
                         let allowCharging = true;
-                        if (batPriority === "speicher" && batSoc < minSoc) {
+                        if (batPriority === 'speicher' && batSoc < minSoc) {
                             allowCharging = false;
                         }
 
-                        const triggerPower = -einschwelle; 
+                        const triggerPower = -einschwelle;
                         if (allowCharging && effectiveEvuPower <= triggerPower) {
                             targetCurrent = minCurrent;
                         } else {
@@ -134,11 +134,11 @@ class VirtualWb extends utils.Adapter {
                     const targetCurrent = cpTargets[i];
                     const shouldCharge = targetCurrent > 0;
 
-                    await this.setStateAsync(writeState, { val: targetCurrent, ack: false });
+                    await this.setForeignStateAsync(writeState, { val: targetCurrent, ack: false });
                     await this.setStateAsync(`cp${i}.active`, { val: shouldCharge, ack: true });
 
                     if (powerState) {
-                        const pState = await this.getStateAsync(powerState);
+                        const pState = await this.getForeignStateAsync(powerState);
                         if (pState && typeof pState.val === 'number') {
                             totalPower += pState.val;
                         }
@@ -165,8 +165,9 @@ class VirtualWb extends utils.Adapter {
     }
 
     onStateChange(id, state) {
-        if (state) {
+        if (state && !state.ack) {
             this.log.info(`State ${id} geändert zu: ${state.val}`);
+            this.runControlLoop();
         }
     }
 }
