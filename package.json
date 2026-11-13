@@ -1,9 +1,9 @@
 {
-  "name": "iobroker.virtualwb",
+  "name": "iobroker.virtualWB",
   "version": "1.0.1",
   "description": "virtualWB adapter in pure JavaScript and JSONConfig UI with explicit mode fix",
   "author": "User",
-  "homepage": "https://github.com/Datzaeasy/iobroker.virtualwb",
+  "homepage": "https://github.com/Datzaeasy/iobroker.virtualWB",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Datzaeasy/iobroker.virtualwb.git"
+    "url": "https://github.com/Datzaeasy/iobroker.virtualWB.git"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.1.6"
