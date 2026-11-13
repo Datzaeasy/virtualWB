@@ -1,2 +1,2 @@
 # ioBroker.virtualwb
-virtualWB with official ioBroker admin layout, native selectId object browser, working range sliders, and proper tab pane filtering.
+virtualWB adapter styled exactly like ioBroker.go-e-charger with native Materialize tabs, selectId object browser, sliders and footer buttons.

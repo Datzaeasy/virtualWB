@@ -1,6 +1,6 @@
 <html>
 <head>
-    <!-- Materialize CSS & ioBroker Admin CSS -->
+    <!-- Materialize CSS & ioBroker Admin CSS styled like ioBroker.go-e-charger -->
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css">
     
@@ -18,7 +18,7 @@
         function load(settings, onChange) {
             if (!settings) return;
             
-            // Standardfelder belegen
+            // Standardfelder laden
             $('.value').each(function () {
                 var $key = $(this);
                 var id = $key.attr('id');
@@ -31,17 +31,17 @@
                 }
             });
 
-            // Event Listener für Änderungen, damit ioBroker den Speichern-Button aktiviert
+            // ÄNDERUNGEN ÜBERWACHEN -> Aktiviert den Speichern-Button in ioBroker
             $('.value').on('change input', function () {
                 onChange();
             });
 
-            // Initialisierung Materialize Selects
+            // Materialize FormSelects initialisieren
             if (typeof M !== 'undefined' && M.FormSelect) {
                 $('select').formSelect();
             }
 
-            // Korrekte ioBroker Tabs Initialisierung
+            // go-e-charger style Tabs Initialisierung
             if (typeof M !== 'undefined' && M.Tabs) {
                 var elem = document.querySelector('.tabs');
                 if (elem) {
@@ -49,7 +49,7 @@
                 }
             }
 
-            // Range Slider live text updates & onChange trigger
+            // Slider Live Aktualisierung
             function updateRangeVal(selector, valSelector, unit) {
                 var val = $(selector).val();
                 $(valSelector).text(val + ' ' + unit);
@@ -91,7 +91,7 @@
             });
             updateRangeVal('#minpv_ausschaltSoc', '#minpv_ausschaltSocVal', '%');
 
-            // Nativer ioBroker selectId Objekt-Auswahldialog mit echtem Objektbrowser
+            // Nativer ioBroker selectId Objekt-Auswahldialog (Exakt wie bei go-e-charger / standard Adaptern)
             $('.translateId').click(function () {
                 var $this = $(this);
                 var inputId = $this.attr('data-input');
@@ -120,7 +120,6 @@
                         }
                     });
                 } else {
-                    console.warn('initSelectId & _selectId not found, falling back to prompt.');
                     var userVal = prompt('Bitte ioBroker Datenpunkt-Pfad eingeben:', $input.val());
                     if (userVal !== null) {
                         $input.val(userVal).trigger('change').trigger('input');
@@ -155,30 +154,30 @@
         }
     </script>
     <style>
-        body { background-color: #fafafa; font-size: 15px !important; }
-        .m.adapter-container { padding: 0 20px 20px 20px; font-size: 15px; }
-        .nav-row { margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .tabs.tabs-transparent .tab a { color: rgba(255,255,255,0.8); font-weight: 500; font-size: 16px; }
+        body { background-color: #fafafa; }
+        .m.adapter-container { padding: 0 15px 15px 15px; }
+        .nav-row { margin-bottom: 20px; background-color: #1e88e5; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .tabs.tabs-transparent .tab a { color: rgba(255,255,255,0.8); font-weight: 500; font-size: 15px; }
         .tabs.tabs-transparent .tab a.active { color: #ffffff; font-weight: 700; background-color: rgba(0,0,0,0.15); }
         .tabs.tabs-transparent .indicator { background-color: #ffffff; height: 3px; }
         .card-panel { padding: 20px; border-radius: 4px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .section-title { font-size: 1.3rem; font-weight: 600; color: #1e88e5; margin-bottom: 15px; border-bottom: 2px solid #1e88e5; padding-bottom: 5px; }
+        .section-title { font-size: 1.25rem; font-weight: 600; color: #1e88e5; margin-bottom: 15px; border-bottom: 2px solid #1e88e5; padding-bottom: 5px; }
         
-        /* Input & Label Readability */
+        /* go-e-charger style input & label adjustments */
         label { font-size: 14px !important; color: #333 !important; }
-        .input-field input[type=text], .input-field input[type=number] { font-size: 16px !important; }
+        .input-field input[type=text], .input-field input[type=number] { font-size: 15px !important; }
         
-        /* Object Picker Button & Input Layout */
+        /* Object Picker Button Layout */
         .input-field.with-button { position: relative; }
-        .input-field.with-button input { width: calc(100% - 50px) !important; display: inline-block; }
-        .btn-floating.translateId { width: 40px; height: 40px; line-height: 40px; position: absolute; right: 0; top: 10px; box-shadow: none; cursor: pointer; }
-        .btn-floating.translateId i { font-size: 20px; line-height: 40px; }
+        .input-field.with-button input { width: calc(100% - 48px) !important; display: inline-block; }
+        .btn-floating.translateId { width: 38px; height: 38px; line-height: 38px; position: absolute; right: 0; top: 12px; box-shadow: none; cursor: pointer; }
+        .btn-floating.translateId i { font-size: 18px; line-height: 38px; }
     </style>
 </head>
 <body>
     <div class="m adapter-container">
-        <!-- Top Nav / Tabs Header in official ioBroker Materialize style -->
-        <div class="row nav-row" style="background-color: #1e88e5;">
+        <!-- go-e-charger style top navigation tabs -->
+        <div class="row nav-row">
             <div class="col s12">
                 <ul class="tabs tabs-transparent">
                     <li class="tab col s3"><a class="active" href="#tab-general">Allgemeines & Lastmanagement</a></li>

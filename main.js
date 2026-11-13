@@ -14,7 +14,7 @@ class VirtualWb extends utils.Adapter {
     }
 
     async onReady() {
-        this.log.info('virtualWB Adapter gestartet (v0.7.0)!');
+        this.log.info('virtualWB Adapter gestartet (v0.8.0 - go-e-charger style)!');
         this.subscribeStates('control.chargeMode');
         this.interval = setInterval(() => {
             this.runControlLoop();

@@ -1,7 +1,7 @@
 {
   "name": "iobroker.virtualwb",
-  "version": "0.7.0",
-  "description": "virtualWB adapter with native ioBroker admin layout, Materialize tabs, selectId object picker, range sliders and footer buttons",
+  "version": "0.8.0",
+  "description": "virtualWB adapter with genuine go-e-charger style Materialize tabs, selectId object browser, sliders and footer action buttons",
   "author": "User",
   "homepage": "https://github.com/Datzaeasy/iobroker.virtualwb",
   "license": "MIT",
@@ -9,8 +9,8 @@
     "ioBroker",
     "virtualWB",
     "openWB",
-    "charging",
-    "photovoltaic"
+    "go-e-charger",
+    "charging"
   ],
   "repository": {
     "type": "git",
